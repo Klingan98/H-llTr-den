@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Social Bas</title>
+  <style>
+    :root {
+      --bg: #f5f1ea;
+      --panel: #fffaf2;
+      --white: #ffffff;
+      --text: #1f2933;
+      --muted: #687382;
+      --border: #e3d8c8;
+      --accent: #3f6f65;
+      --danger: #a64b4b;
+      --warning: #a96b28;
+      --ok: #3f6f65;
+      --soft: #ece4d7;
+      --shadow: 0 14px 40px rgba(38, 48, 60, 0.12);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #fff8ec, var(--bg) 42%, #eae2d6 100%);
+      color: var(--text);
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    button {
+      border: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 10px 14px;
+      background: var(--text);
+      color: white;
+      font-weight: 850;
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+    }
+
+    button.secondary {
+      background: var(--soft);
+      color: var(--text);
+    }
+
+    button.ghost {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    button.accent {
+      background: var(--accent);
+    }
+
+    button.warning {
+      background: #f3dfce;
+      color: var(--warning);
+    }
+
+    button.danger {
+      background: #f3dfdc;
+      color: var(--danger);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.86);
+      color: var(--text);
+      border-radius: 16px;
+      padding: 12px 13px;
+      outline: none;
+    }
+
+    textarea {
+      min-height: 82px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: rgba(63, 111, 101, 0.6);
+      box-shadow: 0 0 0 4px rgba(63, 111, 101, 0.12);
+    }
+
+    .app {
+      width: min(1180px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 28px 0 60px;
+    }
+
+    .shell {
+      display: grid;
+      gap: 18px;
+    }
+
+    .hero, .card {
+      background: rgba(255, 250, 242, 0.86);
+      border: 1px solid rgba(227, 216, 200, 0.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .hero {
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      background: rgba(63, 111, 101, 0.12);
+      right: -90px;
+      top: -90px;
+    }
+
+    .hero-main, .priority-card {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      width: fit-content;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: var(--accent);
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.35rem, 5vw, 5rem);
+      line-height: 0.94;
+      letter-spacing: -0.065em;
+      max-width: 760px;
+    }
+
+    .hero p {
+      margin: 18px 0 0;
+      max-width: 670px;
+      color: var(--muted);
+      font-size: 1.05rem;
+      line-height: 1.65;
+    }
+
+    .priority-card {
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+      align-content: start;
+    }
+
+    .priority-label {
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .priority-name {
+      font-size: 1.8rem;
+      letter-spacing: -0.05em;
+      font-weight: 900;
+      line-height: 1.05;
+    }
+
+    .priority-detail {
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.94rem;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .stat {
+      background: rgba(255, 255, 255, 0.76);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 1.9rem;
+      letter-spacing: -0.05em;
+      margin-bottom: 4px;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.35;
+    }
+
+    .card {
+      padding: 22px;
+    }
+
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 1.28rem;
+      letter-spacing: -0.025em;
+    }
+
+    .section-title p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.8fr 0.8fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .form-grid.two {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: white;
+      border-color: transparent;
+    }
+
+    .list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .person {
+      background: rgba(255, 255, 255, 0.78);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 16px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .person.needs {
+      border-color: rgba(166, 75, 75, 0.45);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 238, 235, 0.76));
+    }
+
+    .person.soon {
+      border-color: rgba(169, 107, 40, 0.36);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(255, 245, 229, 0.78));
+    }
+
+    .person.ok {
+      border-color: rgba(63, 111, 101, 0.30);
+    }
+
+    .person.snoozed {
+      opacity: 0.82;
+    }
+
+    .person-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .name-row {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+    }
+
+    .status-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      background: var(--muted);
+      box-shadow: 0 0 0 4px rgba(104, 115, 130, 0.12);
+    }
+
+    .status-dot.needs {
+      background: var(--danger);
+      box-shadow: 0 0 0 4px rgba(166, 75, 75, 0.14);
+    }
+
+    .status-dot.soon {
+      background: var(--warning);
+      box-shadow: 0 0 0 4px rgba(169, 107, 40, 0.14);
+    }
+
+    .status-dot.ok {
+      background: var(--ok);
+      box-shadow: 0 0 0 4px rgba(63, 111, 101, 0.14);
+    }
+
+    .person h3 {
+      margin: 0;
+      font-size: 1.12rem;
+      letter-spacing: -0.025em;
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+      margin-top: 4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      width: fit-content;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.78rem;
+      font-weight: 900;
+      white-space: nowrap;
+      background: var(--soft);
+      color: var(--accent);
+    }
+
+    .badge.needs {
+      background: #f3dfdc;
+      color: var(--danger);
+    }
+
+    .badge.soon {
+      background: #f3dfce;
+      color: var(--warning);
+    }
+
+    .badge.ok {
+      background: #dfebe7;
+      color: var(--ok);
+    }
+
+    .badge.snoozed {
+      background: #e9edf2;
+      color: #64748b;
+    }
+
+    .details {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .detail {
+      background: rgba(255, 255, 255, 0.62);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 11px;
+    }
+
+    .detail span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 5px;
+    }
+
+    .detail strong {
+      display: block;
+      font-size: 0.92rem;
+      line-height: 1.3;
+    }
+
+    .meter {
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(31, 41, 51, 0.09);
+      overflow: hidden;
+    }
+
+    .meter span {
+      display: block;
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: var(--accent);
+      transition: width 0.2s ease;
+    }
+
+    .meter.needs span {
+      background: var(--danger);
+    }
+
+    .meter.soon span {
+      background: var(--warning);
+    }
+
+    .notes {
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.45;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .empty {
+      border: 1px dashed var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.45);
+      line-height: 1.55;
+    }
+
+    .message-panel {
+      display: none;
+      margin-top: 14px;
+      background: #1f2933;
+      color: white;
+      border-radius: 20px;
+      padding: 16px;
+      line-height: 1.55;
+    }
+
+    .message-panel.show {
+      display: grid;
+      gap: 12px;
+    }
+
+    .message-panel textarea {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.18);
+      color: white;
+      min-height: 110px;
+    }
+
+    .message-panel textarea:focus {
+      border-color: rgba(255, 255, 255, 0.42);
+      box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
+    }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 20px;
+      transform: translateX(-50%) translateY(20px);
+      opacity: 0;
+      pointer-events: none;
+      background: #1f2933;
+      color: white;
+      padding: 12px 16px;
+      border-radius: 999px;
+      box-shadow: var(--shadow);
+      transition: 0.18s ease;
+      font-weight: 850;
+      z-index: 10;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .hero, .stats, .form-grid, .form-grid.two, .details {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title, .toolbar, .person-top {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <div class="shell">
+      <section class="hero">
+        <div class="hero-main">
+          <div class="eyebrow">Social bas · några få viktiga relationer</div>
+          <h1>Håll tråden vid liv.</h1>
+          <p>
+            Inte streaks. Inte konstant chatt. Bara en tydlig signal när någon i din sociala bas har varit tyst för länge.
+            Välj få personer, sätt en rimlig rytm, och låt appen visa vem som behöver lite uppmärksamhet.
+          </p>
+        </div>
+
+        <aside class="priority-card" id="priorityCard">
+          <div class="priority-label">Nästa att prioritera</div>
+          <div class="priority-name" id="priorityName">Ingen ännu</div>
+          <div class="priority-detail" id="priorityDetail">Lägg till en person i din sociala bas för att börja.</div>
+          <div class="btn-row">
+            <button class="accent" id="priorityDoneBtn">Kontaktad idag</button>
+            <button class="secondary" id="priorityMessageBtn">Föreslå text</button>
+          </div>
+        </aside>
+      </section>
+
+      <section class="stats">
+        <div class="stat"><strong id="statTotal">0</strong><span>personer i basen</span></div>
+        <div class="stat"><strong id="statNeeds">0</strong><span>behöver uppmärksamhet nu</span></div>
+        <div class="stat"><strong id="statSoon">0</strong><span>är snart dags</span></div>
+        <div class="stat"><strong id="statOk">0</strong><span>är lugna just nu</span></div>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <div>
+            <h2>Lägg till person</h2>
+            <p>Håll listan liten. 1–5 personer räcker långt. Det här ska kännas som stöd, inte som ännu ett krav.</p>
+          </div>
+        </div>
+
+        <form id="personForm">
+          <div class="form-grid">
+            <input id="nameInput" placeholder="Namn, t.ex. Erik" required />
+            <select id="cadenceInput" aria-label="Kontakt-rytm">
+              <option value="7">Varje vecka</option>
+              <option value="14">Varannan vecka</option>
+              <option value="30" selected>En gång i månaden</option>
+              <option value="60">Varannan månad</option>
+            </select>
+            <input id="lastInput" type="date" aria-label="Senaste kontakt" />
+          </div>
+          <div class="form-grid two">
+            <select id="channelInput" aria-label="Bästa kontaktform">
+              <option value="Meddelande">Meddelande</option>
+              <option value="Snap">Snap</option>
+              <option value="Telefon">Telefon</option>
+              <option value="Ses IRL">Ses IRL</option>
+              <option value="Valfritt">Valfritt</option>
+            </select>
+            <input id="contextInput" placeholder="Relation / sammanhang, t.ex. gammal vän, kollega, fotboll" />
+          </div>
+          <textarea id="notesInput" placeholder="Valfria anteckningar: vad brukar ni prata om, vad känns naturligt att föreslå, något viktigt att minnas?"></textarea>
+          <button class="accent" type="submit">Lägg till i social bas</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="section-title">
+          <div>
+            <h2>Uppmärksamhetskö</h2>
+            <p>Sorterad efter vem som mest behöver en liten signal. Rött betyder inte panik, bara: “börja här”.</p>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <div class="filters">
+            <button class="ghost filter-btn active" data-filter="all">Alla</button>
+            <button class="ghost filter-btn" data-filter="needs">Behöver</button>
+            <button class="ghost filter-btn" data-filter="soon">Snart</button>
+            <button class="ghost filter-btn" data-filter="ok">Lugna</button>
+            <button class="ghost filter-btn" data-filter="snoozed">Snoozade</button>
+          </div>
+          <button class="ghost" id="exportBtn">Exportera backup</button>
+        </div>
+
+        <div id="personList" class="list"></div>
+
+        <div class="message-panel" id="messagePanel">
+          <strong id="messageTitle">Förslag</strong>
+          <textarea id="messageText"></textarea>
+          <div class="btn-row">
+            <button class="secondary" id="copyMessageBtn">Kopiera</button>
+            <button class="ghost" id="closeMessageBtn">Stäng</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div id="toast" class="toast">Klart</div>
+
+  <script>
+    const STORAGE_KEY = "social-bas-v1";
+    const LEGACY_KEYS = ["social-struktur-v2", "social-struktur-v1"];
+
+    const state = loadState();
+    let activeFilter = "all";
+    let selectedPersonId = null;
+
+    const els = {
+      priorityName: document.getElementById("priorityName"),
+      priorityDetail: document.getElementById("priorityDetail"),
+      priorityDoneBtn: document.getElementById("priorityDoneBtn"),
+      priorityMessageBtn: document.getElementById("priorityMessageBtn"),
+      statTotal: document.getElementById("statTotal"),
+      statNeeds: document.getElementById("statNeeds"),
+      statSoon: document.getElementById("statSoon"),
+      statOk: document.getElementById("statOk"),
+      personForm: document.getElementById("personForm"),
+      nameInput: document.getElementById("nameInput"),
+      cadenceInput: document.getElementById("cadenceInput"),
+      lastInput: document.getElementById("lastInput"),
+      channelInput: document.getElementById("channelInput"),
+      contextInput: document.getElementById("contextInput"),
+      notesInput: document.getElementById("notesInput"),
+      personList: document.getElementById("personList"),
+      messagePanel: document.getElementById("messagePanel"),
+      messageTitle: document.getElementById("messageTitle"),
+      messageText: document.getElementById("messageText"),
+      copyMessageBtn: document.getElementById("copyMessageBtn"),
+      closeMessageBtn: document.getElementById("closeMessageBtn"),
+      exportBtn: document.getElementById("exportBtn"),
+      toast: document.getElementById("toast")
+    };
+
+    function id() {
+      return crypto.randomUUID ? crypto.randomUUID() : String(Date.now() + Math.random());
+    }
+
+    function todayISO() {
+      return toISO(new Date());
+    }
+
+    function toISO(date) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+
+    function parseISO(value) {
+      if (!value) return null;
+      const clean = String(value).slice(0, 10);
+      const parts = clean.split("-").map(Number);
+      if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
+      return new Date(parts[0], parts[1] - 1, parts[2]);
+    }
+
+    function addDaysISO(dateString, days) {
+      const date = parseISO(dateString) || new Date();
+      date.setDate(date.getDate() + Number(days));
+      return toISO(date);
+    }
+
+    function daysUntil(dateString) {
+      const today = parseISO(todayISO());
+      const date = parseISO(dateString);
+      if (!date) return 0;
+      return Math.ceil((date - today) / 86400000);
+    }
+
+    function daysSince(dateString) {
+      if (!dateString) return Infinity;
+      return Math.max(0, -daysUntil(dateString));
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return "aldrig";
+      const date = parseISO(dateString);
+      if (!date) return "okänt";
+      return date.toLocaleDateString("sv-SE", { weekday: "short", day: "numeric", month: "short" });
+    }
+
+    function cadenceText(days) {
+      const map = {
+        7: "varje vecka",
+        14: "varannan vecka",
+        30: "en gång i månaden",
+        60: "varannan månad"
+      };
+      return map[days] || `var ${days}:e dag`;
+    }
+
+    function loadState() {
+      const base = { people: [] };
+      try {
+        const current = localStorage.getItem(STORAGE_KEY);
+        if (current) {
+          const parsed = JSON.parse(current);
+          return { people: Array.isArray(parsed.people) ? parsed.people.map(normalizePerson) : [] };
+        }
+
+        for (const key of LEGACY_KEYS) {
+          const raw = localStorage.getItem(key);
+          if (!raw) continue;
+          const legacy = JSON.parse(raw);
+          if (Array.isArray(legacy.contacts)) {
+            return { people: legacy.contacts.map(normalizePerson) };
+          }
+        }
+
+        return base;
+      } catch {
+        return base;
+      }
+    }
+
+    function normalizePerson(person) {
+      return {
+        id: person.id || id(),
+        name: person.name || "Namnlös",
+        cadence: Number(person.cadence || 30),
+        channel: person.channel || "Meddelande",
+        context: person.context || "",
+        notes: person.notes || "",
+        lastContacted: person.lastContacted ? String(person.lastContacted).slice(0, 10) : null,
+        snoozedUntil: person.snoozedUntil ? String(person.snoozedUntil).slice(0, 10) : null
+      };
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function getStatus(person) {
+      const cadence = Number(person.cadence || 30);
+      const snoozeLeft = person.snoozedUntil ? daysUntil(person.snoozedUntil) : 0;
+
+      if (person.snoozedUntil && snoozeLeft > 0) {
+        return {
+          type: "snoozed",
+          label: "Snoozad",
+          detail: `pausad till ${formatDate(person.snoozedUntil)}`,
+          next: `tillbaka om ${snoozeLeft} d`,
+          progress: 0,
+          urgency: -100
+        };
+      }
+
+      if (!person.lastContacted) {
+        return {
+          type: "needs",
+          label: "Behöver första signalen",
+          detail: "ingen kontakt markerad än",
+          next: "börja lätt",
+          progress: 100,
+          urgency: 120
+        };
+      }
+
+      const dueDate = addDaysISO(person.lastContacted, cadence);
+      const left = daysUntil(dueDate);
+      const since = daysSince(person.lastContacted);
+      const progress = Math.min(100, Math.round((since / cadence) * 100));
+      const soonThreshold = Math.min(4, Math.max(2, Math.ceil(cadence * 0.25)));
+
+      if (left <= 0) {
+        return {
+          type: "needs",
+          label: "Behöver uppmärksamhet",
+          detail: left === 0 ? "dags idag" : `${Math.abs(left)} d över rytmen`,
+          next: left === 0 ? "idag" : `försenad ${Math.abs(left)} d`,
+          progress: 100,
+          urgency: 100 + Math.abs(left)
+        };
+      }
+
+      if (left <= soonThreshold) {
+        return {
+          type: "soon",
+          label: "Snart dags",
+          detail: `${left} d kvar till din rytm`,
+          next: `om ${left} d`,
+          progress,
+          urgency: 60 - left
+        };
+      }
+
+      return {
+        type: "ok",
+        label: "Lugnt",
+        detail: `${left} d kvar`,
+        next: `om ${left} d`,
+        progress,
+        urgency: Math.max(1, 30 - left)
+      };
+    }
+
+    function sortedPeople() {
+      return state.people
+        .map(person => ({ person, status: getStatus(person) }))
+        .sort((a, b) => b.status.urgency - a.status.urgency || a.person.name.localeCompare(b.person.name, "sv"));
+    }
+
+    function summary() {
+      const counts = { total: state.people.length, needs: 0, soon: 0, ok: 0, snoozed: 0 };
+      state.people.forEach(person => {
+        counts[getStatus(person).type] += 1;
+      });
+      return counts;
+    }
+
+    function nextPriority() {
+      return sortedPeople().find(item => item.status.type !== "snoozed") || null;
+    }
+
+    function render() {
+      renderStats();
+      renderPriority();
+      renderPeople();
+      saveState();
+    }
+
+    function renderStats() {
+      const counts = summary();
+      els.statTotal.textContent = counts.total;
+      els.statNeeds.textContent = counts.needs;
+      els.statSoon.textContent = counts.soon;
+      els.statOk.textContent = counts.ok;
+    }
+
+    function renderPriority() {
+      const next = nextPriority();
+      const disabled = !next;
+      els.priorityDoneBtn.disabled = disabled;
+      els.priorityMessageBtn.disabled = disabled;
+
+      if (!next) {
+        els.priorityName.textContent = "Ingen ännu";
+        els.priorityDetail.textContent = "Lägg till en person i din sociala bas för att börja.";
+        selectedPersonId = null;
+        return;
+      }
+
+      selectedPersonId = next.person.id;
+      els.priorityName.textContent = next.person.name;
+      els.priorityDetail.textContent = `${next.status.label} · ${next.status.detail}. Bästa kontaktform: ${next.person.channel}.`;
+    }
+
+    function renderPeople() {
+      els.personList.innerHTML = "";
+      const people = sortedPeople().filter(item => activeFilter === "all" || item.status.type === activeFilter);
+
+      if (state.people.length === 0) {
+        els.personList.innerHTML = `<div class="empty">Lägg till din första person. Börja hellre med en enda viktig relation än att skapa ett stort system.</div>`;
+        return;
+      }
+
+      if (people.length === 0) {
+        els.personList.innerHTML = `<div class="empty">Inga personer matchar filtret just nu.</div>`;
+        return;
+      }
+
+      people.forEach(({ person, status }) => {
+        const card = document.createElement("article");
+        card.className = `person ${status.type}`;
+        card.innerHTML = `
+          <div class="person-top">
+            <div>
+              <div class="name-row">
+                <span class="status-dot ${status.type}"></span>
+                <h3>${escapeHTML(person.name)}</h3>
+              </div>
+              <div class="meta">${escapeHTML(person.context || "Ingen beskrivning")}</div>
+            </div>
+            <span class="badge ${status.type}">${status.label}</span>
+          </div>
+
+          <div class="details">
+            <div class="detail"><span>Senast kontakt</span><strong>${formatDate(person.lastContacted)}</strong></div>
+            <div class="detail"><span>Kontakt-rytm</span><strong>${cadenceText(person.cadence)}</strong></div>
+            <div class="detail"><span>Nästa signal</span><strong>${status.next}</strong></div>
+            <div class="detail"><span>Kontaktform</span><strong>${escapeHTML(person.channel)}</strong></div>
+          </div>
+
+          <div class="meter ${status.type}" aria-label="Kontaktmätare">
+            <span style="width: ${status.progress}%"></span>
+          </div>
+
+          <div class="notes">${escapeHTML(person.notes || status.detail)}</div>
+
+          <div class="btn-row">
+            <button class="accent" data-action="done" data-id="${person.id}">Kontaktad idag</button>
+            <button class="secondary" data-action="message" data-id="${person.id}">Föreslå text</button>
+            <button class="warning" data-action="snooze" data-id="${person.id}">Snooza 7 d</button>
+            <button class="ghost" data-action="edit" data-id="${person.id}">Redigera</button>
+            <button class="danger" data-action="delete" data-id="${person.id}">Ta bort</button>
+          </div>
+        `;
+        els.personList.appendChild(card);
+      });
+    }
+
+    function escapeHTML(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function showToast(text) {
+      els.toast.textContent = text;
+      els.toast.classList.add("show");
+      window.setTimeout(() => els.toast.classList.remove("show"), 1500);
+    }
+
+    function findPerson(personId) {
+      return state.people.find(person => person.id === personId);
+    }
+
+    function markDone(personId) {
+      const person = findPerson(personId);
+      if (!person) return;
+      person.lastContacted = todayISO();
+      person.snoozedUntil = null;
+      render();
+      showToast("Kontakt markerad");
+    }
+
+    function snooze(personId) {
+      const person = findPerson(personId);
+      if (!person) return;
+      person.snoozedUntil = addDaysISO(todayISO(), 7);
+      render();
+      showToast("Snoozad i 7 dagar");
+    }
+
+    function deletePerson(personId) {
+      const person = findPerson(personId);
+      if (!person) return;
+      const ok = confirm(`Ta bort ${person.name} från din sociala bas?`);
+      if (!ok) return;
+      state.people = state.people.filter(item => item.id !== personId);
+      render();
+      showToast("Borttagen");
+    }
+
+    function editPerson(personId) {
+      const person = findPerson(personId);
+      if (!person) return;
+
+      const newName = prompt("Namn", person.name);
+      if (newName === null || !newName.trim()) return;
+
+      const newCadence = prompt("Kontakt-rytm i dagar, t.ex. 7, 14, 30 eller 60", String(person.cadence));
+      if (newCadence === null || Number.isNaN(Number(newCadence))) return;
+
+      const newChannel = prompt("Bästa kontaktform", person.channel);
+      if (newChannel === null) return;
+
+      const newContext = prompt("Relation / sammanhang", person.context);
+      if (newContext === null) return;
+
+      const newNotes = prompt("Anteckningar", person.notes);
+      if (newNotes === null) return;
+
+      person.name = newName.trim();
+      person.cadence = Number(newCadence);
+      person.channel = newChannel.trim() || "Meddelande";
+      person.context = newContext.trim();
+      person.notes = newNotes.trim();
+      render();
+      showToast("Uppdaterad");
+    }
+
+    function messageFor(person) {
+      const status = getStatus(person);
+      const name = person.name;
+
+      if (!person.lastContacted) {
+        return `${name}, det var längesen. Hur är läget?`;
+      }
+
+      if (status.type === "needs") {
+        return `${name}, kom att tänka på dig. Hur är läget?`;
+      }
+
+      if (person.channel === "Ses IRL") {
+        return `${name}, jag tänkte att det hade varit kul att ses någon dag. Kaffe, match eller något enkelt?`;
+      }
+
+      return `${name}, hur är läget? Tänkte bara höra av mig lite.`;
+    }
+
+    function showMessage(personId) {
+      const person = findPerson(personId);
+      if (!person) return;
+      els.messageTitle.textContent = `Textförslag till ${person.name}`;
+      els.messageText.value = messageFor(person);
+      els.messagePanel.classList.add("show");
+      els.messageText.focus();
+    }
+
+    async function copyText(text) {
+      try {
+        await navigator.clipboard.writeText(text);
+        showToast("Kopierat");
+      } catch {
+        showToast("Kunde inte kopiera");
+      }
+    }
+
+    els.personForm.addEventListener("submit", event => {
+      event.preventDefault();
+      state.people.push({
+        id: id(),
+        name: els.nameInput.value.trim(),
+        cadence: Number(els.cadenceInput.value),
+        lastContacted: els.lastInput.value || null,
+        channel: els.channelInput.value,
+        context: els.contextInput.value.trim(),
+        notes: els.notesInput.value.trim(),
+        snoozedUntil: null
+      });
+      els.personForm.reset();
+      els.cadenceInput.value = "30";
+      els.channelInput.value = "Meddelande";
+      render();
+      showToast("Person tillagd");
+    });
+
+    document.addEventListener("click", event => {
+      const actionButton = event.target.closest("[data-action]");
+      const filterButton = event.target.closest("[data-filter]");
+
+      if (actionButton) {
+        const action = actionButton.dataset.action;
+        const personId = actionButton.dataset.id;
+        if (action === "done") markDone(personId);
+        if (action === "message") showMessage(personId);
+        if (action === "snooze") snooze(personId);
+        if (action === "edit") editPerson(personId);
+        if (action === "delete") deletePerson(personId);
+      }
+
+      if (filterButton) {
+        activeFilter = filterButton.dataset.filter;
+        document.querySelectorAll(".filter-btn").forEach(button => button.classList.remove("active"));
+        filterButton.classList.add("active");
+        renderPeople();
+      }
+    });
+
+    els.priorityDoneBtn.addEventListener("click", () => {
+      if (selectedPersonId) markDone(selectedPersonId);
+    });
+
+    els.priorityMessageBtn.addEventListener("click", () => {
+      if (selectedPersonId) showMessage(selectedPersonId);
+    });
+
+    els.copyMessageBtn.addEventListener("click", () => {
+      copyText(els.messageText.value);
+    });
+
+    els.closeMessageBtn.addEventListener("click", () => {
+      els.messagePanel.classList.remove("show");
+    });
+
+    els.exportBtn.addEventListener("click", () => {
+      const backup = JSON.stringify(state, null, 2);
+      copyText(backup);
+    });
+
+    render();
+  </script>
+</body>
+</html>
